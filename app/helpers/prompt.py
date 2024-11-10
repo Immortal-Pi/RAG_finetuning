@@ -9,7 +9,7 @@ chat_text_qa_msgs = [
         role=MessageRole.SYSTEM,
         content=(
             """ 
-            You are an experienced immigration lawyer providing detailed legal advice in {language}. 
+            You are an experienced lawyer providing detailed legal advice in {language}. 
             Carefully review the following documents to extract relevant information and address the client's question 
             Analyze any legal regulations, risks, or implications that may apply, and provide guidance on the next steps.
 

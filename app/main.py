@@ -20,7 +20,7 @@ from llama_index.core import SimpleDirectoryReader
 from llama_index.core.memory import ChatMemoryBuffer
 from helpers.prompt import text_qa_template,refine_template
 import subprocess
-
+# from openai import OpenAI,Op
 
 
 
@@ -46,6 +46,7 @@ def get_vector_Store_index(documents):
         model_name=os.getenv('TOGETHERAI_EMBEDDING_MODEL_NAME'),
         api_key=os.getenv('TOGETHER_API_KEY')
     )
+    # embed_model=
 
 
     db=chromadb.PersistentClient(path='./app/data/chroma_db/')

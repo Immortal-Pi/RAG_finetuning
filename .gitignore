@@ -1,1 +1,4 @@
 .env
+/models/
+/app/data/
+app/data/chroma_db/chroma.sqlite3
