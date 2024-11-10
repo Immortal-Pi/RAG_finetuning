@@ -16,17 +16,10 @@ from helpers.clean_data import clean_text
 from langchain_community.document_loaders import WebBaseLoader
 from llama_index.embeddings.together import TogetherEmbedding
 from llama_index.readers.web import SimpleWebPageReader
-from langchain.text_splitter import CharacterTextSplitter
-from llama_index.readers.web import SpiderWebReader
-from llama_index.core.llms import ChatMessage, MessageRole
-from llama_index.core.prompts import ChatPromptTemplate
-from llama_index.core.memory import ChatMemoryBuffer
-from langchain.memory import ConversationBufferMemory
-from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
-from llama_index.core.memory import  ChatMemoryBuffer
+from llama_index.core import SimpleDirectoryReader
 from llama_index.core.memory import ChatMemoryBuffer
 from helpers.prompt import text_qa_template,refine_template
-
+import subprocess
 
 
 
@@ -34,7 +27,17 @@ from helpers.prompt import text_qa_template,refine_template
 
 
 def get_documents(url_link):
-    documents=SimpleWebPageReader(html_to_text=True).load_data([url_link])
+    # documents=SimpleWebPageReader(html_to_text=True).load_data([url_link])
+    subprocess.run(["python", "craw4ai.py", url_link])
+    # try:
+    #     with open("crawled_data.txt", "r", encoding="utf-8") as file:
+    #         documents = file.read()
+    #         # print('test', documents)
+    # except FileNotFoundError:
+    #     documents = None
+    #     print(FileNotFoundError)
+    # # print(documents)
+    documents=SimpleDirectoryReader('data').load_data()
     print(documents)
     return documents
 
@@ -45,12 +48,12 @@ def get_vector_Store_index(documents):
     )
 
 
-    db=chromadb.PersistentClient(path='./data/chroma_db/')
-    # if "url" in [c.name for c in db.list_collections()]:
-
+    db=chromadb.PersistentClient(path='./app/data/chroma_db/')
+    if "url" in [c.name for c in db.list_collections()]:
+        db.delete_collection('url')
 
     # db.reset()
-    db.delete_collection('url')
+
     chromadb_collection=db.create_collection('url')
     vectorstore=ChromaVectorStore(chroma_collection=chromadb_collection)
     storage_context=StorageContext.from_defaults(vector_store=vectorstore)
@@ -63,7 +66,7 @@ def get_chat_engine():
         model_name=os.getenv('TOGETHERAI_EMBEDDING_MODEL_NAME'),
         api_key=os.getenv('TOGETHER_API_KEY')
     )
-    db = chromadb.PersistentClient(path='./data/chroma_db/')
+    db = chromadb.PersistentClient(path='./app/data/chroma_db/')
     chroma_collection = db.get_collection('url')
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
     index = VectorStoreIndex.from_vector_store(
@@ -116,6 +119,8 @@ if __name__ == '__main__':
         with st.spinner('Processing'):
             documents = get_documents(url_link)
             index=get_vector_Store_index(documents)
+            print(index)
+            # chat_engine = get_chat_engine()
 
     user_question = st.text_input("Ask me anything about the URL:")
     chat_engine = get_chat_engine()
