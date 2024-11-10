@@ -32,7 +32,7 @@ chat_text_qa_msgs = [
             "{context_str}\n"
             "---------------------\n"
             "Given the context information and not prior knowledge, "
-            "answer the query.\n"
+            "answer the query in {language}.\n"
             "Query: {query_str}\n"
             "Answer: "
         ),

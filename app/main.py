@@ -61,7 +61,7 @@ def get_vector_Store_index(documents):
 
     return index
 
-def get_chat_engine():
+def get_chat_engine(language):
     embed_model = TogetherEmbedding(
         model_name=os.getenv('TOGETHERAI_EMBEDDING_MODEL_NAME'),
         api_key=os.getenv('TOGETHER_API_KEY')
@@ -77,7 +77,10 @@ def get_chat_engine():
     chat_engine = index.as_chat_engine(
         chat_mode='context',
         memory=memory,
-        system_prompt=(text_qa_template),
+        system_prompt=(text_qa_template.format(
+            language=language,
+            context="The client is an immigrant from other state and doesnt know any laws in USA"
+        )),
     )
     return chat_engine
 
@@ -122,9 +125,17 @@ if __name__ == '__main__':
             print(index)
             # chat_engine = get_chat_engine()
 
+    language = st.selectbox(
+        "select language",
+        ('English',' Kannada', 'Hindi', 'French', 'Spanish', 'Urdu'),
+        index=0
+    )
+
     user_question = st.text_input("Ask me anything about the URL:")
-    chat_engine = get_chat_engine()
+    chat_engine=get_chat_engine(language)
+    # print(language)
     if user_question:
+        # chat_engine = get_chat_engine()
         response=chat_engine.chat(user_question)
         st.write(response.response)
 
