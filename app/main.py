@@ -85,16 +85,7 @@ def get_chat_engine(language):
     return chat_engine
 
 
-# def handle_userinput(user_question,index):
-#
-#
-#     response=chat_engine.chat(user_question)
-#     st.write(response.response)
-
-
 if __name__ == '__main__':
-
-
 
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
@@ -108,13 +99,6 @@ if __name__ == '__main__':
     USER_AVATAR = "👤"
     BOT_AVATAR = "🤖"
 
-
-
-    # index=get_vector_Store_index()
-
-
-
-
     st.subheader('URL')
     url_link = st.text_input("The URL link")
     button=st.button('Process')
@@ -127,7 +111,7 @@ if __name__ == '__main__':
 
     language = st.selectbox(
         "select language",
-        ('English',' Kannada', 'Hindi', 'French', 'Spanish', 'Urdu'),
+        ('English','Spanish','Chinese','Tagalog(Filipino)','Vietnamese','Arabic','French','Koream','Russian','Portuguese','German','Polish','Italian','Urdu','Telugu','Japanese','Kannada', 'Hindi', 'Spanish', 'Urdu'),
         index=0
     )
 
