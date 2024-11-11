@@ -39,9 +39,9 @@ This project was built for the hackathon Llama-Impact-Hackathon so we used the l
 
 ![App Screenshot](https://github.com/Immortal-Pi/RAG_finetuning/blob/main/outputs/3.png)
 
-![App Screenshot](https://github.com/Immortal-Pi/doc_chat_bot/blob/main/resources/4.png)
+![App Screenshot](https://github.com/Immortal-Pi/RAG_finetuning/blob/main/outputs/4.png)
 
-![App Screenshot](https://github.com/Immortal-Pi/doc_chat_bot/blob/main/resources/7.png)
+![App Screenshot](https://github.com/Immortal-Pi/RAG_finetuning/blob/main/outputs/7.png)
 
 
 ## Tech Stack
