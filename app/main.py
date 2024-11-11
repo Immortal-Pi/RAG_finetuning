@@ -20,6 +20,8 @@ from llama_index.core import SimpleDirectoryReader
 from llama_index.core.memory import ChatMemoryBuffer
 from helpers.prompt import text_qa_template,refine_template
 import subprocess
+from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.embeddings.azure_openai import AzureOpenAIEmbedding
 # from openai import OpenAI,Op
 
 
@@ -42,12 +44,19 @@ def get_documents(url_link):
     return documents
 
 def get_vector_Store_index(documents):
-    embed_model = TogetherEmbedding(
-        model_name=os.getenv('TOGETHERAI_EMBEDDING_MODEL_NAME'),
-        api_key=os.getenv('TOGETHER_API_KEY')
-    )
+    # embed_model = TogetherEmbedding(
+    #     model_name=os.getenv('TOGETHERAI_EMBEDDING_MODEL_NAME'),
+    #     api_key=os.getenv('TOGETHER_API_KEY')
+    # )
     # embed_model=
-
+    # embed_model = OpenAIEmbedding(model="text-embedding-3-large")
+    embed_model=AzureOpenAIEmbedding(
+        model='text-embedding-ada-002',
+        deployment_name=os.getenv('AZURE_OPENAI_EMBEDDING_MODEL_NAME'),
+        api_key=os.getenv('AZURE_OPENAI_API_KEY'),
+        azure_endpoint=os.getenv('AZURE_OPENAI_EMBEDDINGS_ENDPOINT'),
+        api_version=os.getenv('AZURE_OpenAI_API_VERSION')
+    )
 
     db=chromadb.PersistentClient(path='./app/data/chroma_db/')
     if "url" in [c.name for c in db.list_collections()]:
@@ -63,9 +72,16 @@ def get_vector_Store_index(documents):
     return index
 
 def get_chat_engine(language):
-    embed_model = TogetherEmbedding(
-        model_name=os.getenv('TOGETHERAI_EMBEDDING_MODEL_NAME'),
-        api_key=os.getenv('TOGETHER_API_KEY')
+    # embed_model = TogetherEmbedding(
+    #     model_name=os.getenv('TOGETHERAI_EMBEDDING_MODEL_NAME'),
+    #     api_key=os.getenv('TOGETHER_API_KEY')
+    # )
+    embed_model=AzureOpenAIEmbedding(
+        model='text-embedding-ada-002',
+        deployment_name=os.getenv('AZURE_OPENAI_EMBEDDING_MODEL_NAME'),
+        api_key=os.getenv('AZURE_OPENAI_API_KEY'),
+        azure_endpoint=os.getenv('AZURE_OPENAI_EMBEDDINGS_ENDPOINT'),
+        api_version=os.getenv('AZURE_OpenAI_API_VERSION')
     )
     db = chromadb.PersistentClient(path='./app/data/chroma_db/')
     chroma_collection = db.get_collection('url')
@@ -80,7 +96,7 @@ def get_chat_engine(language):
         memory=memory,
         system_prompt=(text_qa_template.format(
             language=language,
-            context="The client is an immigrant from other state and doesnt know any laws in USA"
+            context="The client is an immigrant or a tourist from other state and doesnt know any laws in USA"
         )),
     )
     return chat_engine

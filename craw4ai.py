@@ -6,11 +6,15 @@ async def crawl_url(crawler, url):
     result = await crawler.arun(
         url=url,
         #word_count_threshold=10,
-        #excluded_tags=['form', 'header'],
+        excluded_tags=['form', 'header'],
         exclude_external_links=True,
         process_iframes=True,
         remove_overlay_elements=True,
-        bypass_cache=False
+        bypass_cache=False,
+        
+        word_count_threshold=10,
+        exclude_external_images=True
+        
     )
 
     if result.success:

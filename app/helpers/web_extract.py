@@ -56,5 +56,5 @@ def crawl_4ai(url):
     return asyncio.run(main(url))
 
 # if __name__ == "__main__":
-#     data=asyncio.run(main(url))
+#     data=asyncio.run(main('https://www.usa.gov/'))
 #     print(data)
