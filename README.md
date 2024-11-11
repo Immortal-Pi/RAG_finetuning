@@ -5,7 +5,7 @@ LlamaLaw is an AI-powered chatbot designed to help visitors and newcomers naviga
 
 ## Demo
 
-[![Watch the video]](https://youtu.be/loLcfCr6Ul0)
+[![Watch the video](https://github.com/Immortal-Pi/RAG_finetuning/blob/main/outputs/app.png)](https://youtu.be/loLcfCr6Ul0)
 ## Architecture
 
 ![App Screenshot](https://github.com/Immortal-Pi/RAG_finetuning/blob/main/outputs/Network%20diagram.png)
